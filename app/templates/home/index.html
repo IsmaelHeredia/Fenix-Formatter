@@ -1,0 +1,52 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Fenix Formatter 1.0{% endblock %}
+
+{% block content %}
+
+<h1 align="center">Fenix Formatter 1.0</h1>
+<br/>
+<form>
+  <div class="form-group">
+    <label for="enterCode">Enter code</label>
+    <textarea class="form-control" id="txtCode" name="txtCode" rows="5"><title>Page Title</title><p>Some text here</p></textarea>
+  </div>
+
+  <div class="form-group">
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group row">
+          <label for="selectType" class="col-sm-3">Type : </label>
+          <div class="col-sm-8">
+            <select class="form-control" id="txtType" name="txtType">
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="js">Javascript</option>
+              <option value="json">JSON</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group row">
+          <label for="enterIndentWidth" class="col-sm-5">Indent Width : </label>
+          <div class="col-sm-2">
+            <input type="number" id="txtIndentWidth" name="txtIndentWidth" value="2">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <button type="submit" class="btn btn-primary btn-block" id="btnFormat" name="btnFormat">Format</button>
+      </div>
+    </div>
+  </div>  
+
+  <div class="form-group">
+    <label for="txtResult">Result</label>
+    <textarea class="form-control" id="txtResult" name="txtResult" rows="5" readonly></textarea>
+    <br/>
+    <button type="submit" class="btn btn-primary" id="btnCopy" name="btnCopy">Copy to clipboard</button>
+  </div>
+</form>
+
+{% endblock %}

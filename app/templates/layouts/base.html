@@ -1,0 +1,92 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title> 
+    <link rel="icon" href="{% static 'images/fenix.jpg' %}">
+    
+    <!-- Bootstrap -->
+
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/toastr.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}" charset="UTF-8"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/toastr.min.js' %}"></script>
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <section class="container-fluid" style="margin-top: 50px">    
+            {% block content %}
+            {% endblock %}
+        </section>
+        <footer>
+            <div class="container text-center">
+                <p>Written by Ismael Heredia in the year 2021</p>
+            </div>
+        </footer>
+    </body>
+    <script>
+
+        function copyToClipboard(text) {
+            var element_textarea = document.createElement("textarea");
+            document.body.appendChild(element_textarea);
+            element_textarea.value = text;
+            element_textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(element_textarea);
+        }
+
+        $(document).ready(function(){
+
+            $("#btnFormat").click(function(e) {
+                var txtCode = $("textarea[name='txtCode']").val();
+                var txtType = $("select[name='txtType']").val();
+                var txtIndentWidth = $("input[name='txtIndentWidth']").val();
+
+                $.ajax({
+                  type: 'POST',
+                  url: "format/",
+                  data: {
+                    "code" : txtCode,
+                    "code_type" : txtType,
+                    "indent_width" : txtIndentWidth
+                  },
+                  dataType: 'json',
+                  success: function(resultado){
+                    var status = resultado.status;
+                    var message = resultado.message;
+                    var pretty_code = resultado.pretty_code;
+                    $("#txtResult").text(pretty_code);
+                    if(status == 1) {
+                        toastr.success(message);
+                    } else 
+                        toastr.error(message);
+                    }
+                });
+
+                return false;
+
+            });
+
+            $("#btnCopy").click(function(e) {
+                var code = $("textarea[name='txtResult']").val();
+                copyToClipboard(code);
+                toastr.success("Copied to clipboard");
+
+                return false;
+            });
+        });
+    </script>
+</html>
